@@ -56,6 +56,7 @@ public class AdapterAddress extends RecyclerView.Adapter<AdapterAddress.MyViewHo
                 inn.putExtra(Consts.PAYMENT_STATUS, mContext.totalPay);
                 inn.putExtra(Consts.SHIPPING_COST, mContext.shoppingpay);
                 inn.putExtra(Consts.DTO, mContext.getIntent().getSerializableExtra(Consts.DTO));
+                inn.putExtra(Consts.CART,mContext.getIntent().getSerializableExtra(Consts.CART));
                 inn.putExtra(Consts.FLAG, 1);
                 mContext.startActivity(inn);
                 mContext.finish();

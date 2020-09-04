@@ -2,14 +2,15 @@ package com.proatcoding.pets.activity.food;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -61,7 +62,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
 
     private void findUI() {
 
-        Log.e(TAG, "findUI: "+totalPay );
+        Log.e(TAG, "findUI: " + totalPay);
         binding.llBack.setOnClickListener(this);
         binding.tvSkip.setOnClickListener(this);
     }
@@ -74,9 +75,10 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.tvSkip:
                 Intent inn = new Intent(mContext, OrdershipedActivity.class);
-                inn.putExtra(Consts.PAYMENT_STATUS,totalPay);
-                inn.putExtra(Consts.SHIPPING_COST,shoppingpay);
+                inn.putExtra(Consts.PAYMENT_STATUS, totalPay);
+                inn.putExtra(Consts.SHIPPING_COST, shoppingpay);
                 inn.putExtra(Consts.DTO, getIntent().getSerializableExtra(Consts.DTO));
+                inn.putExtra(Consts.CART, getIntent().getSerializableExtra(Consts.CART));
                 startActivity(inn);
                 finish();
                 break;
@@ -104,7 +106,7 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
                     Type listType = new TypeToken<List<AddressDTO>>() {
                     }.getType();
                     try {
-                        addressDTOList = (ArrayList<AddressDTO>) new Gson().fromJson(response.getJSONArray("data").toString(), listType);
+                        addressDTOList = new Gson().fromJson(response.getJSONArray("data").toString(), listType);
 
                        /* GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
                         binding.rvAddress.setLayoutManager(gridLayoutManager);*/
@@ -123,9 +125,10 @@ public class AddressActivity extends AppCompatActivity implements View.OnClickLi
                 } else {
                     //  ProjectUtils.showLong(mContext, msg);
                     Intent inn = new Intent(mContext, OrdershipedActivity.class);
-                    inn.putExtra(Consts.PAYMENT_STATUS,totalPay);
-                    inn.putExtra(Consts.SHIPPING_COST,shoppingpay);
+                    inn.putExtra(Consts.PAYMENT_STATUS, totalPay);
+                    inn.putExtra(Consts.SHIPPING_COST, shoppingpay);
                     inn.putExtra(Consts.DTO, getIntent().getSerializableExtra(Consts.DTO));
+                    inn.putExtra(Consts.CART, getIntent().getSerializableExtra(Consts.CART));
                     startActivity(inn);
                     finish();
 

@@ -239,6 +239,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         if (jsonParser.RESULT) {
                             try {
                                 loginDTO = new Gson().fromJson(response.getJSONObject("data").toString(), LoginDTO.class);
+                                Log.e("Login", " Login response:--- "+response.toString());
+
                                 sharedPrefrence.setParentUser(loginDTO, Consts.LOGINDTO);
                                 next();
                                 ProjectUtils.showToast(getActivity(), jsonParser.MESSAGE);

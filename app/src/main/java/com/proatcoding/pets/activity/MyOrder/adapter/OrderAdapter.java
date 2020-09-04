@@ -130,27 +130,17 @@ public class OrderAdapter extends BaseAdapter {
 
 
         holder.tvAmount.setText(myOrderDtoList.get(position).getCurrency_type() + " " + myOrderDtoList.get(position).getFinal_price());
-        holder.cardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in = new Intent(myOrderActivity, ViewOrderActivity.class);
-                in.putExtra(Consts.ORDER, myOrderDtoList.get(position));
-                in.putExtra(Consts.ORDER_ID, myOrderDtoList.get(position).getOrder_id());
-                in.putExtra(Consts.FINAL_PRICE, myOrderDtoList.get(position).getFinal_price());
-                in.putExtra(Consts.CONFIRM_STATUS, myOrderDtoList.get(position).getPayment_status());
-                in.putExtra(Consts.CURRENCYTYPE, myOrderDtoList.get(position).getCurrency_type());
-                myOrderActivity.startActivity(in);
-            }
+        holder.cardview.setOnClickListener(v -> {
+            Intent in = new Intent(myOrderActivity, ViewOrderActivity.class);
+            in.putExtra(Consts.ORDER, myOrderDtoList.get(position));
+            in.putExtra(Consts.ORDER_ID, myOrderDtoList.get(position).getOrder_id());
+            in.putExtra(Consts.FINAL_PRICE, myOrderDtoList.get(position).getFinal_price());
+            in.putExtra(Consts.CONFIRM_STATUS, myOrderDtoList.get(position).getPayment_status());
+            in.putExtra(Consts.CURRENCYTYPE, myOrderDtoList.get(position).getCurrency_type());
+            myOrderActivity.startActivity(in);
         });
 
-        holder.tvpay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                myOrderActivity.genrateCheckSum(position);
-
-            }
-        });
+        holder.tvpay.setOnClickListener(v -> myOrderActivity.genrateCheckSum(position));
         return itemView;
     }
 
@@ -165,16 +155,16 @@ public class OrderAdapter extends BaseAdapter {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.paymentdailog);
-        final CustomTextViewBold ctvPayPal = (CustomTextViewBold) dialog.findViewById(R.id.ctvPayPal);
+        final CustomTextViewBold ctvPayPal = dialog.findViewById(R.id.ctvPayPal);
         String payPal = "Pay by <font color='#303F9F'>Pay</font><font color='#00BCD4'>Pal.</font>";
         ctvPayPal.setText(Html.fromHtml(payPal), CustomTextViewBold.BufferType.NORMAL);
 
-        final CustomTextViewBold ctvstripe = (CustomTextViewBold) dialog.findViewById(R.id.ctvstripe);
+        final CustomTextViewBold ctvstripe = dialog.findViewById(R.id.ctvstripe);
         String strip = "Pay by <font color='#00BCD4'>Stripe</font>";
         ctvstripe.setText(Html.fromHtml(strip), CustomTextViewBold.BufferType.NORMAL);
 
-        final LinearLayout llPayPal = (LinearLayout) dialog.findViewById(R.id.llPayPal);
-        final LinearLayout llstripe = (LinearLayout) dialog.findViewById(R.id.llstripe);
+        final LinearLayout llPayPal = dialog.findViewById(R.id.llPayPal);
+        final LinearLayout llstripe = dialog.findViewById(R.id.llstripe);
         dialog.show();
         llPayPal.setOnClickListener(new View.OnClickListener() {
             @Override

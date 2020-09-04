@@ -341,36 +341,7 @@ public class ProjectUtils {
         }
     }
 
-    /**
-     * Static method to show the progress dialog.
-     *
-     * @param context      : Context of the activity where to show the dialog
-     * @param isCancelable : Sets whether this dialog is cancelable with the BACK key.
-     * @param message      : Message to be shwon on the progress dialog.
-     * @return Object of progress dialog.
-     */
-  /*  public static Dialog showProgressDialog(Context context,
-                                            boolean isCancelable, String message) {
-        mProgressDialog = new ProgressDialog(context);
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setMessage(message);
-        mProgressDialog.show();
-        mProgressDialog.setCancelable(isCancelable);
-        return mProgressDialog;
-    }
 
-
-    public static void pauseProgressDialog() {
-        try {
-            if (mProgressDialog != null) {
-                mProgressDialog.cancel();
-                mProgressDialog.dismiss();
-                mProgressDialog = null;
-            }
-        } catch (IllegalArgumentException ex) {
-            ex.printStackTrace();
-        }
-    }*/
     public static void showProgressDialog(Context context,
                                           boolean isCancelable, String message) {
         dialogbox = new Dialog(context);
@@ -378,15 +349,12 @@ public class ProjectUtils {
         dialogbox.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialogbox.setContentView(R.layout.progressxml);
 
-        //avi = dialogbox.findViewById(R.id.avi);
-        // avi.show();
         dialogbox.show();
     }
 
     public static void pauseProgressDialog() {
         try {
             if (dialogbox != null) {
-                // avi.hide();
                 dialogbox.dismiss();
             }
         } catch (Exception e) {
@@ -668,12 +636,8 @@ public class ProjectUtils {
         //String regexStr = "^([0-9\\(\\)\\/\\+ \\-]*)$";
         String regexStr = "^((0)|(91)|(00)|[7-9]){1}[0-9]{3,14}$";
 
-        if (number.length() < 10 || number.length() > 13 || number.matches(regexStr) == false) {
-            //	Log.d("tag", "Number is not valid");
-            return false;
-        }
-
-        return true;
+        //	Log.d("tag", "Number is not valid");
+        return number.length() >= 10 && number.length() <= 13 && number.matches(regexStr) != false;
     }
 
 
@@ -682,12 +646,9 @@ public class ProjectUtils {
         //String regexStr = "^([0-9\\(\\)\\/\\+ \\-]*)$";
         String regexStr = " (?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,20})$";
 
-        if (number.length() < 6 || number.length() > 13 /*|| number.matches(regexStr) == false*/) {
-            //	Log.d("tag", "Number is not valid");
-            return false;
-        }
-
-        return true;
+        /*|| number.matches(regexStr) == false*/
+        //	Log.d("tag", "Number is not valid");
+        return number.length() >= 6 && number.length() <= 13;
     }
 
     /**
@@ -697,37 +658,22 @@ public class ProjectUtils {
      * @return True if not null.
      */
     public static boolean isEditTextFilled(EditText text) {
-        if (text.getText() != null && text.getText().toString().trim().length() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return text.getText() != null && text.getText().toString().trim().length() > 0;
     }
 
     public static boolean isTextFilled(TextView text) {
-        if (text.getText() != null && text.getText().toString().trim().length() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return text.getText() != null && text.getText().toString().trim().length() > 0;
     }
 
     public static boolean isPasswordLengthCorrect(EditText text) {
-        if (text.getText() != null && text.getText().toString().trim().length() >= 8) {
-            return true;
-        } else {
-            return false;
-        }
+        return text.getText() != null && text.getText().toString().trim().length() >= 8;
     }
 
     public static boolean isNetworkConnected(Context mContext) {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
-        if (ni == null) {
-            // There are no active networks.
-            return false;
-        } else
-            return true;
+        // There are no active networks.
+        return ni != null;
     }
 
     public static void InternetAlertDialog(Context mContext) {
@@ -1421,7 +1367,7 @@ public class ProjectUtils {
     public static int getIntValue(String value) {
         int result = 0;
         try {
-            result = ((Number) NumberFormat.getInstance().parse(value)).intValue();
+            result = NumberFormat.getInstance().parse(value).intValue();
 
         } catch (ParseException e) {
             result = 0;

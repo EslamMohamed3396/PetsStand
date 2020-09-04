@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: morxander.editcard:EditCard:1.0.1@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8fc1ac949a0592d08549b487392054e9/jetified-EditCard-1.0.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8fc1ac949a0592d08549b487392054e9/jetified-EditCard-1.0.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8fc1ac949a0592d08549b487392054e9/jetified-EditCard-1.0.1/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/morxander.editcard/EditCard/1.0.1/2a1ad3660d6c32f8d65e8807e3d1b4f53ca4e8a4/EditCard-1.0.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/morxander.editcard/EditCard/1.0.1/95ab4cb80a0f4336e6f254481b68465d965cd219/EditCard-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -4,16 +4,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.cardview.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.google.gson.Gson;
 import com.proatcoding.pets.R;
@@ -40,7 +41,7 @@ import java.util.regex.Pattern;
 import static com.proatcoding.pets.MyFirebaseMessagingService.MyPREFERENCES;
 
 public class OTPActivity extends AppCompatActivity implements View.OnClickListener, SmsListener {
-    private String TAG = OTPActivity.class.getSimpleName();
+    private static final String TAG = "OTPActivity";
     private SharedPrefrence prefrence;
     private Context mContext;
     private LinearLayout back;
@@ -158,25 +159,25 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         String otp = one + "" + two + "" + three + "" + four;
         Log.e("OTP", otp);
 
-            SmsReceiver.bindListener(null, "Varun");
+        SmsReceiver.bindListener(null, "Varun");
 
-            if (NetworkManager.isConnectToInternet(mContext)) {
+        if (NetworkManager.isConnectToInternet(mContext)) {
 
-                /*Here put code of login or signup api*/
-                if (user_status.equalsIgnoreCase("login")) {
-                    number = getIntent().getStringExtra("mobile_number");
-                    countryCode = getIntent().getStringExtra("country_code");
+            /*Here put code of login or signup api*/
+            if (user_status.equalsIgnoreCase("login")) {
+                number = getIntent().getStringExtra("mobile_number");
+                countryCode = getIntent().getStringExtra("country_code");
 
-                    getLoginByMobileNo();
-                }else if(user_status.equalsIgnoreCase("signUp")){
+                getLoginByMobileNo();
+            } else if (user_status.equalsIgnoreCase("signUp")) {
 
-                    number = getIntent().getStringExtra("mobile_number");
-                    countryCode = getIntent().getStringExtra("country_code");
-                    email = getIntent().getStringExtra("email");
-                    f_name = getIntent().getStringExtra("first_name");
-                    l_name = getIntent().getStringExtra("last_name");
-                    getSignByMobileNo();
-                }
+                number = getIntent().getStringExtra("mobile_number");
+                countryCode = getIntent().getStringExtra("country_code");
+                email = getIntent().getStringExtra("email");
+                f_name = getIntent().getStringExtra("first_name");
+                l_name = getIntent().getStringExtra("last_name");
+                getSignByMobileNo();
+            }
 
                 /*if (!loginDTO.getAddress().equalsIgnoreCase("")) {
                     ProjectUtils.showLong(mContext, "Login Successful");
@@ -195,9 +196,9 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                     finish();
 
                 }*/
-            } else {
-                ProjectUtils.showLong(mContext, "Please enable your internet connection.");
-            }
+        } else {
+            ProjectUtils.showLong(mContext, "Please enable your internet connection.");
+        }
 
     }
 
@@ -298,7 +299,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         parms.put(Consts.MOBILE_NO, number);
         parms.put(Consts.DEVICE_ID, "12345");
         parms.put(Consts.OS_TYPE, "android");
-        parms.put(Consts.DEVICE_TOKAN, ""+sharedpreferences.getString(Consts.TOKAN, ""));
+        parms.put(Consts.DEVICE_TOKAN, "" + sharedpreferences.getString(Consts.TOKAN, ""));
         parms.put(Consts.COUNTRY_CODE, countryCode);
 
         ProjectUtils.showProgressDialog(mContext, true, "Please Wait!!");
@@ -309,6 +310,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                     ProjectUtils.showLong(mContext, msg);
 
                     try {
+                        Log.d(TAG, "getLoginByMobileNo: " + response.toString());
                         LoginDTO loginDTO = new Gson().fromJson(response.getJSONObject("data").toString(), LoginDTO.class);
                         prefrence.setParentUser(loginDTO, Consts.LOGINDTO);
 
@@ -333,11 +335,11 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
         parms.put(Consts.FIRSTNAME, f_name);
         parms.put(Consts.LAST_NAME, l_name);
         parms.put(Consts.MOBILE_NO, number);
-        parms.put(Consts.COUNTRY_CODE, ""+countryCode);
-        parms.put(Consts.EMAIL, ""+email);
+        parms.put(Consts.COUNTRY_CODE, "" + countryCode);
+        parms.put(Consts.EMAIL, "" + email);
         parms.put(Consts.DEVICE_ID, "12345");
         parms.put(Consts.OS_TYPE, "android");
-        parms.put(Consts.DEVICE_TOKAN, ""+sharedpreferences.getString(Consts.TOKAN, ""));
+        parms.put(Consts.DEVICE_TOKAN, "" + sharedpreferences.getString(Consts.TOKAN, ""));
 
         ProjectUtils.showProgressDialog(mContext, true, "Please Wait!!");
         new HttpsRequest(Consts.SIGNUP_BY_MOBILE_NO, parms, mContext).stringPost(TAG, new Helper() {
@@ -347,6 +349,7 @@ public class OTPActivity extends AppCompatActivity implements View.OnClickListen
                     ProjectUtils.showLong(mContext, msg);
 
                     try {
+                        Log.d(TAG, "getSignByMobileNo: "+response.toString());
                         LoginDTO loginDTO = new Gson().fromJson(response.getJSONObject("data").toString(), LoginDTO.class);
                         prefrence.setParentUser(loginDTO, Consts.LOGINDTO);
 

@@ -43,6 +43,13 @@
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup">
         <activity
+            android:name=".activity.payment.WeAcceptSDK.PayActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.payment.WeAcceptSDK.ThreeDSecureWebViewActivty"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.proatcoding.pets.activity.food.PromoCodeActivity"
             android:screenOrientation="portrait" />
         <activity

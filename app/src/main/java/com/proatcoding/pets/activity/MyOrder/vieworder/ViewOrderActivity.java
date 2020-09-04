@@ -90,14 +90,14 @@ public class ViewOrderActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void init() {
-        tvgrandtotel = (CustomTextView) findViewById(R.id.tvgrandtotel);
+        tvgrandtotel = findViewById(R.id.tvgrandtotel);
         cvpay = findViewById(R.id.cvpay);
-        back = (LinearLayout) findViewById(R.id.back);
-        lsVieworder = (RecyclerView) findViewById(R.id.lsVieworder);
-        ivProducted = (ImageView) findViewById(R.id.ivProducted);
-        IVpacked = (ImageView) findViewById(R.id.IVpacked);
-        IVdispatched = (ImageView) findViewById(R.id.IVdispatched);
-        IVdelivered = (ImageView) findViewById(R.id.IVdelivered);
+        back = findViewById(R.id.back);
+        lsVieworder = findViewById(R.id.lsVieworder);
+        ivProducted = findViewById(R.id.ivProducted);
+        IVpacked = findViewById(R.id.IVpacked);
+        IVdispatched = findViewById(R.id.IVdispatched);
+        IVdelivered = findViewById(R.id.IVdelivered);
 
         tvOrderID = findViewById(R.id.tvOrderID);
         tvDeliveryDate = findViewById(R.id.tvDeliveryDate);
@@ -156,7 +156,7 @@ public class ViewOrderActivity extends AppCompatActivity implements View.OnClick
                     }.getType();
                     try {
                         myOrderDtoItemList = new ArrayList<>();
-                        myOrderDtoItemList = (ArrayList<MyOrderDetails>) new Gson().fromJson(response.getJSONArray("data").toString(), listType);
+                        myOrderDtoItemList = new Gson().fromJson(response.getJSONArray("data").toString(), listType);
                         showDataList();
                         getMyOrderStatus();
                     } catch (JSONException e) {
@@ -241,39 +241,33 @@ public class ViewOrderActivity extends AppCompatActivity implements View.OnClick
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.paymentdailog);
-        final CustomTextViewBold ctvPayPal = (CustomTextViewBold) dialog.findViewById(R.id.ctvPayPal);
+        final CustomTextViewBold ctvPayPal = dialog.findViewById(R.id.ctvPayPal);
         String payPal = "Pay by <font color='#303F9F'>Pay</font><font color='#00BCD4'>Pal.</font>";
         ctvPayPal.setText(Html.fromHtml(payPal), CustomTextViewBold.BufferType.NORMAL);
 
-        final CustomTextViewBold ctvstripe = (CustomTextViewBold) dialog.findViewById(R.id.ctvstripe);
+        final CustomTextViewBold ctvstripe = dialog.findViewById(R.id.ctvstripe);
         String strip = "Pay by <font color='#00BCD4'>Stripe</font>";
         ctvstripe.setText(Html.fromHtml(strip), CustomTextViewBold.BufferType.NORMAL);
 
-        final LinearLayout llPayPal = (LinearLayout) dialog.findViewById(R.id.llPayPal);
-        final LinearLayout llstripe = (LinearLayout) dialog.findViewById(R.id.llstripe);
+        final LinearLayout llPayPal = dialog.findViewById(R.id.llPayPal);
+        final LinearLayout llstripe = dialog.findViewById(R.id.llstripe);
         dialog.show();
-        llPayPal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url = "http://phpstack-132936-652468.cloudwaysapps.com/Paypal/paypal?user_id=" + loginDTO.getId() +
-                        "&order_id=" + order_id + "&user_name=" + loginDTO.getFirst_name() + "&amount=" + final_price;
-                Intent intent = new Intent(mContext, PaymentViewActivity.class);
-                intent.putExtra(Consts.PAYAMENT_URL, url);
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        llPayPal.setOnClickListener(view -> {
+            String url = "http://phpstack-132936-652468.cloudwaysapps.com/Paypal/paypal?user_id=" + loginDTO.getId() +
+                    "&order_id=" + order_id + "&user_name=" + loginDTO.getFirst_name() + "&amount=" + final_price;
+            Intent intent = new Intent(mContext, PaymentViewActivity.class);
+            intent.putExtra(Consts.PAYAMENT_URL, url);
+            startActivity(intent);
+            dialog.dismiss();
         });
-        llstripe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String url = "http://phpstack-132936-652468.cloudwaysapps.com/Stripe/BookingPayement/make_payment?user_id=" + loginDTO.getId() +
-                        "&order_id=" + order_id + "&user_name=" + loginDTO.getFirst_name() + "&amount=" + final_price;
-                Intent intent = new Intent(mContext, PaymentViewActivity.class);
-                intent.putExtra(Consts.PAYAMENT_URL, url);
-                startActivity(intent);
+        llstripe.setOnClickListener(view -> {
+            String url = "http://phpstack-132936-652468.cloudwaysapps.com/Stripe/BookingPayement/make_payment?user_id=" + loginDTO.getId() +
+                    "&order_id=" + order_id + "&user_name=" + loginDTO.getFirst_name() + "&amount=" + final_price;
+            Intent intent = new Intent(mContext, PaymentViewActivity.class);
+            intent.putExtra(Consts.PAYAMENT_URL, url);
+            startActivity(intent);
 
-                dialog.dismiss();
-            }
+            dialog.dismiss();
         });
     }
 

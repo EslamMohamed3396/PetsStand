@@ -200,4 +200,8 @@
 
     <color name="light_water_color">#A3A7A3</color>
     <color name="indicator_fill_color">#ff0099</color>
+
+    <color name="colorDefaultButton">#CC0bd796</color>
+    <color name="colorHint">#96b1bc</color>
+    <color name="colorText">#4F7283</color>
 </resources>

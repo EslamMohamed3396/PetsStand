@@ -127,7 +127,7 @@ public class MyOrderActivity extends AppCompatActivity implements PaymentResultL
                     }.getType();
                     try {
                         myOrderDtoList = new ArrayList<>();
-                        myOrderDtoList = (ArrayList<MyOrderDto>) new Gson().fromJson(response.getJSONArray("data").toString(), listType);
+                        myOrderDtoList = new Gson().fromJson(response.getJSONArray("data").toString(), listType);
 
 
                         showDataList();
@@ -278,7 +278,7 @@ public class MyOrderActivity extends AppCompatActivity implements PaymentResultL
 
             @Override
             public void onErrorLoadingWebPage(int iniErrorCode, String inErrorMessage, String inFailingUrl) {
-                Log.d(TAG, "onErrorLoadingWebPage: " + String.valueOf(iniErrorCode));
+                Log.d(TAG, "onErrorLoadingWebPage: " + iniErrorCode);
                 Log.d(TAG, "onErrorLoadingWebPage: " + inErrorMessage);
                 Log.d(TAG, "onErrorLoadingWebPage: " + inFailingUrl);
             }
@@ -361,27 +361,24 @@ public class MyOrderActivity extends AppCompatActivity implements PaymentResultL
         parmsOrder.put(Consts.ORDER_ID, myOrderDtoList.get(position).getOrder_id());
 
         ProjectUtils.showProgressDialog(mContext, true, "Please Wait!!");
-        new HttpsRequest(Consts.ORDER, parmsOrder, mContext).stringPost(TAG, new Helper() {
-            @Override
-            public void backResponse(boolean flag, String msg, JSONObject response) {
-                if (flag) {
-                    try {
-                        MakeOrderDTO makeOrderDTO = new Gson().fromJson(response.getJSONObject("data").toString(), MakeOrderDTO.class);
-                        if (status.equals("1")) {
-                            Intent intent = new Intent(MyOrderActivity.this, ViewOrderDetails.class);
-                            intent.putExtra(Consts.MAKE_ORDER, makeOrderDTO);
-                            startActivity(intent);
-                            finish();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+        new HttpsRequest(Consts.ORDER, parmsOrder, mContext).stringPost(TAG, (flag, msg, response) -> {
+            if (flag) {
+                try {
+                    MakeOrderDTO makeOrderDTO = new Gson().fromJson(response.getJSONObject("data").toString(), MakeOrderDTO.class);
+                    if (status.equals("1")) {
+                        Intent intent = new Intent(MyOrderActivity.this, ViewOrderDetails.class);
+                        intent.putExtra(Consts.MAKE_ORDER, makeOrderDTO);
+                        startActivity(intent);
+                        finish();
                     }
-
-
-                } else {
-                    ProjectUtils.showLong(mContext, msg);
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
+
+            } else {
+                ProjectUtils.showLong(mContext, msg);
+
             }
         });
     }

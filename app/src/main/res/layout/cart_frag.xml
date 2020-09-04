@@ -105,7 +105,7 @@
         android:layout_below="@+id/llFilter"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:visibility="visible"></ListView>
+        android:visibility="visible"/>
 
     <LinearLayout
 

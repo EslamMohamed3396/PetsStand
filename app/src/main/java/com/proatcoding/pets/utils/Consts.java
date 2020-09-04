@@ -7,6 +7,7 @@ public interface Consts {
 
     String PET_CARE = "PetStand";
     String BASE_URL = "http://pet-platform.com/Admin/WebService/";
+    String BASE_PAYMENT = "http://paymentgw.el3zoma.com/api/WeAccept/PlaceOrder.php/";
     String PAYTM_CHECKSUM = "http://139.59.88.66/Paytm/generateChecksum.php"; //Old url http://139.59.45.232/Paytm/generateChecksum.php
     String PAYTM_CALLBACK_URL = "https://securegw.paytm.in/theia/paytmCallback?ORDER_ID="; //https://securegw.paytm.in/theia/paytmCallback?ORDER_ID=
     String PAYTM_TRANS_STATUS_URL = "http://139.59.93.133/Paytm/trans_status.php?order_id=";
@@ -155,6 +156,7 @@ public interface Consts {
     String C_ID = "c_id";
     String P_ID = "p_id";
     String DTO = "dto";
+    String CART = "cart";
     /*Project imp*/
 
     /*Cart ADD UPDATE REMOVE*/

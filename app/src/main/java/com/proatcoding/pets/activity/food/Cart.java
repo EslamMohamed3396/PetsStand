@@ -5,15 +5,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,6 +40,7 @@ import com.proatcoding.pets.utils.ProjectUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +55,7 @@ public class Cart extends AppCompatActivity implements View.OnClickListener {
     ListView lvCart;
     private CustomTextView ctvNumber;
     private Context mContext;
-    private String TAG = Cart.class.getSimpleName();
+    private static final String TAG = "CartCart";
     private SharedPrefrence prefrence;
     private LoginDTO loginDTO;
     private ArrayList<CartDTO> cartDTOList;
@@ -68,7 +70,7 @@ public class Cart extends AppCompatActivity implements View.OnClickListener {
     private CustomTextView tvApply, tvRemove, tvPromoDetails, tvPromoCode;
     private RelativeLayout rlApplyPromo, rlPromoDetails;
     PromoCodeDTO promoCodeDTO;
-    CheckPromoCodeDTO checkPromoCodeDTO =null;
+    CheckPromoCodeDTO checkPromoCodeDTO = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,29 +87,29 @@ public class Cart extends AppCompatActivity implements View.OnClickListener {
     }
 
     public void init() {
-        llNoFound = (LinearLayout) findViewById(R.id.llNoFound);
-        ctvNumber = (CustomTextView) findViewById(R.id.ctvNumber);
-        lvCart = (ListView) findViewById(R.id.lvCart);
-        back = (LinearLayout) findViewById(R.id.back);
+        llNoFound = findViewById(R.id.llNoFound);
+        ctvNumber = findViewById(R.id.ctvNumber);
+        lvCart = findViewById(R.id.lvCart);
+        back = findViewById(R.id.back);
         tvShippingtotel = findViewById(R.id.tvShippingtotel);
         back.setOnClickListener(this);
 
-        rlApplyPromo = (RelativeLayout) findViewById(R.id.rlApplyPromo);
-        rlPromoDetails = (RelativeLayout) findViewById(R.id.rl_Promo_details);
+        rlApplyPromo = findViewById(R.id.rlApplyPromo);
+        rlPromoDetails = findViewById(R.id.rl_Promo_details);
 
-        tvApply = (CustomTextView) findViewById(R.id.tvApply);
+        tvApply = findViewById(R.id.tvApply);
         tvApply.setOnClickListener(this);
 
-        tvRemove = (CustomTextView) findViewById(R.id.tvRemove);
+        tvRemove = findViewById(R.id.tvRemove);
         tvRemove.setOnClickListener(this);
 
-        tvPromoDetails = (CustomTextView) findViewById(R.id.tvPromoDetails);
-        tvPromoCode = (CustomTextView) findViewById(R.id.tvPromoCode);
+        tvPromoDetails = findViewById(R.id.tvPromoDetails);
+        tvPromoCode = findViewById(R.id.tvPromoCode);
 
-        tvMainAmount = (CustomTextViewBold) findViewById(R.id.tvMainAmount);
-        tvgrandtotel = (CustomTextViewBold) findViewById(R.id.tvgrandtotel);
-        btNext = (CustomButton) findViewById(R.id.btNext);
-        btcontinueshop = (CustomButton) findViewById(R.id.btcontinueshop);
+        tvMainAmount = findViewById(R.id.tvMainAmount);
+        tvgrandtotel = findViewById(R.id.tvgrandtotel);
+        btNext = findViewById(R.id.btNext);
+        btcontinueshop = findViewById(R.id.btcontinueshop);
         btNext.setOnClickListener(this);
         btcontinueshop.setOnClickListener(this);
 
@@ -151,28 +153,25 @@ public class Cart extends AppCompatActivity implements View.OnClickListener {
     private void cartnext() {
         try {
             if (cartDTOList.size() > 0) {
-                ProjectUtils.showAlertDialogWithCancel(mContext, "Confirm", "Look like you have confirmed your order. Customer team will contact you. Thank you", "Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        //makeOrder();
-                        Intent inn = new Intent(mContext, AddressActivity.class);
+                ProjectUtils.showAlertDialogWithCancel(mContext, "Confirm", "Look like you have confirmed your order. Customer team will contact you. Thank you", "Confirm", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    //makeOrder();
+                    Intent inn = new Intent(mContext, AddressActivity.class);
 
-                        if(rlPromoDetails.getVisibility()==View.VISIBLE){
-                            inn.putExtra(Consts.PAYMENT_STATUS, tvMainAmount.getText().toString().trim().substring(2));
-                        }else{
-                            inn.putExtra(Consts.PAYMENT_STATUS, tvgrandtotel.getText().toString().trim().substring(2));
-                        }
-
-                        if (!tvShippingtotel.getText().toString().trim().equals("Free")) {
-                            inn.putExtra(Consts.SHIPPING_COST, tvShippingtotel.getText().toString().trim().substring(2));
-                        }else {
-                            inn.putExtra(Consts.SHIPPING_COST,"0");
-                        }
-
-                        inn.putExtra(Consts.DTO, checkPromoCodeDTO);
-                        startActivity(inn);
+                    if (rlPromoDetails.getVisibility() == View.VISIBLE) {
+                        inn.putExtra(Consts.PAYMENT_STATUS, tvMainAmount.getText().toString().trim().substring(2));
+                    } else {
+                        inn.putExtra(Consts.PAYMENT_STATUS, tvgrandtotel.getText().toString().trim().substring(2));
                     }
+
+                    if (!tvShippingtotel.getText().toString().trim().equals("Free")) {
+                        inn.putExtra(Consts.SHIPPING_COST, tvShippingtotel.getText().toString().trim().substring(2));
+                    } else {
+                        inn.putExtra(Consts.SHIPPING_COST, "0");
+                    }
+                    inn.putExtra(Consts.DTO,  checkPromoCodeDTO);
+                    inn.putExtra(Consts.CART,  cartDTOList);
+                    startActivity(inn);
                 }, "Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -190,15 +189,15 @@ public class Cart extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        try{
+        try {
             promoCodeDTO = new PromoCodeDTO();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        if(loginDTO.getEmail().contains(Consts.GUEST_EMAIL)){
+        if (loginDTO.getEmail().contains(Consts.GUEST_EMAIL)) {
             clickDone();
-        }else{
+        } else {
             getMyCart();
         }
     }
@@ -213,7 +212,8 @@ public class Cart extends AppCompatActivity implements View.OnClickListener {
                     }.getType();
                     try {
                         cartDTOList = new ArrayList<>();
-                        cartDTOList = (ArrayList<CartDTO>) new Gson().fromJson(response.getJSONArray("data").toString(), listType);
+                        cartDTOList = new Gson().fromJson(response.getJSONArray("data").toString(), listType);
+                        Log.v(TAG, "CART CART : " + response.toString());
                         showcartlistdata();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -294,11 +294,11 @@ public class Cart extends AppCompatActivity implements View.OnClickListener {
             lvCart.setAdapter(cartAdapter);
             ctvNumber.setText(String.valueOf(cartDTOList.size()));
 
-            if(checkPromoCodeDTO!=null){
+            if (checkPromoCodeDTO != null) {
 //                tvgrandtotel.setPaintFlags(tvgrandtotel.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 //                tvMainAmount.setText(cartDTOList.get(0).getCurrency_type()+" "+checkPromoCodeDTO.getFinal_price());
                 checkPromoCode();
-            }else{
+            } else {
                 tvgrandtotel.setPaintFlags(0);
                 tvMainAmount.setText("");
             }
@@ -392,37 +392,37 @@ public class Cart extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("TAG", "requestCode:  "+requestCode+"  :resultCode:  "+resultCode);
+        Log.e("TAG", "requestCode:  " + requestCode + "  :resultCode:  " + resultCode);
 
-        if(requestCode == Consts.PROMO_CODE_REQUEST && resultCode == Consts.PROMO_CODE_REQUEST){
-            Log.e("TAG", "onActivityResult: "+Consts.PROMO_CODE_REQUEST);
-            if(data !=null){
+        if (requestCode == Consts.PROMO_CODE_REQUEST && resultCode == Consts.PROMO_CODE_REQUEST) {
+            Log.e("TAG", "onActivityResult: " + Consts.PROMO_CODE_REQUEST);
+            if (data != null) {
                 promoCodeDTO = (PromoCodeDTO) data.getSerializableExtra(Consts.DTO);
-                if(!promoCodeDTO.getPromo_code().equalsIgnoreCase("")){
+                if (!promoCodeDTO.getPromo_code().equalsIgnoreCase("")) {
                     rlApplyPromo.setVisibility(View.GONE);
                     rlPromoDetails.setVisibility(View.VISIBLE);
 
-                    tvPromoCode.setText(promoCodeDTO.getPromo_code()+" - Applied");
+                    tvPromoCode.setText(promoCodeDTO.getPromo_code() + " - Applied");
                     tvPromoDetails.setText(promoCodeDTO.getDescription());
-                }else{
+                } else {
                     rlApplyPromo.setVisibility(View.VISIBLE);
                     rlPromoDetails.setVisibility(View.GONE);
 
                     tvgrandtotel.setPaintFlags(0);
                     tvMainAmount.setText("");
                 }
-                try{
+                try {
                     checkPromoCode();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
 
-            }else{
+            } else {
                 rlApplyPromo.setVisibility(View.VISIBLE);
                 rlPromoDetails.setVisibility(View.GONE);
             }
-        }else{
+        } else {
 
         }
     }
@@ -433,16 +433,16 @@ public class Cart extends AppCompatActivity implements View.OnClickListener {
             public void backResponse(boolean flag, String msg, JSONObject response) {
                 if (flag) {
                     try {
-                        if(msg.contains("Promo Code is invalid")){
+                        if (msg.contains("Promo Code is invalid")) {
                             tvgrandtotel.setPaintFlags(0);
                             tvMainAmount.setText("");
-                        }else{
+                        } else {
                             checkPromoCodeDTO = new Gson().fromJson(response.getJSONObject("data").toString(), CheckPromoCodeDTO.class);
-                            Log.e(TAG, "backResponse: "+checkPromoCodeDTO.getFinal_price());
+                            Log.d(TAG, "backResponse: " + response.toString());
 
-                            if(checkPromoCodeDTO!=null){
+                            if (checkPromoCodeDTO != null) {
                                 tvgrandtotel.setPaintFlags(tvgrandtotel.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                                tvMainAmount.setText(cartDTOList.get(0).getCurrency_type()+" "+checkPromoCodeDTO.getFinal_price());
+                                tvMainAmount.setText(cartDTOList.get(0).getCurrency_type() + " " + checkPromoCodeDTO.getFinal_price());
                             }
                         }
 
